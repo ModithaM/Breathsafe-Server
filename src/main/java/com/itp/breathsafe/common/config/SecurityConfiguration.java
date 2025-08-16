@@ -35,7 +35,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers(ADMIN_ENDPOINTS).hasRole("ADMIN")
-                        .requestMatchers(ALL_MEMBER_ENDPOINTS).hasAnyRole("MEMBER", "ADMIN", "SENSOR_ADMIN")
+                        .requestMatchers(ALL_MEMBER_ENDPOINTS).hasAnyRole("USER", "ADMIN", "SENSOR_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess
