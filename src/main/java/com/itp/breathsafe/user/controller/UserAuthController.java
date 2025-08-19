@@ -1,9 +1,25 @@
 package com.itp.breathsafe.user.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.itp.breathsafe.user.dto.LoginRequestDTO;
+import com.itp.breathsafe.user.dto.LoginResponseDTO;
+import com.itp.breathsafe.user.service.UserAuthService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api/v1/auth")
 public class UserAuthController {
+    @Autowired
+    UserAuthService userAuthService;
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> login(
+            @Valid @RequestBody LoginRequestDTO loginRequest
+    ) {
+        LoginResponseDTO response =
+                userAuthService.authenticateUser(loginRequest);
+        return ResponseEntity.ok(response);
+    }
 }
