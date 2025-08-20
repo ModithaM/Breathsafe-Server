@@ -2,7 +2,7 @@ package com.itp.breathsafe.common.constant;
 
 public class Constants {
     public static final String[] PUBLIC_ENDPOINTS = {
-            "/api/auth/**"
+            "/api/v1/auth/**"
     };
     public static final String[] ADMIN_ENDPOINTS = {
             "/api/admin/**"
