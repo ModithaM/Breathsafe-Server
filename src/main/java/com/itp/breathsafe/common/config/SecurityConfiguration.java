@@ -33,6 +33,14 @@ public class SecurityConfiguration {
                 .cors(cors -> {}) // enable CORS
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        // allow Swagger + OpenAPI
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+
+                        // your existing rules
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers(ADMIN_ENDPOINTS).hasRole("ADMIN")
                         .requestMatchers(ALL_MEMBER_ENDPOINTS).hasAnyRole("USER", "ADMIN", "SENSOR_ADMIN")
