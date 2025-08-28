@@ -2,6 +2,8 @@ package com.itp.breathsafe.user.controller;
 
 import com.itp.breathsafe.user.dto.LoginRequestDTO;
 import com.itp.breathsafe.user.dto.LoginResponseDTO;
+import com.itp.breathsafe.user.dto.UserDTO;
+import com.itp.breathsafe.user.entity.User;
 import com.itp.breathsafe.user.service.UserAuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,4 +24,14 @@ public class UserAuthController {
                 userAuthService.authenticateUser(loginRequest);
         return ResponseEntity.ok(response);
     }
+
+
+    @PostMapping("/register")
+    public ResponseEntity<LoginResponseDTO> register(
+            @Valid @RequestBody LoginRequestDTO loginRequest
+    ) {
+        LoginResponseDTO response = userAuthService.createNewUser(loginRequest);
+        return ResponseEntity.ok(response);
+    }
+
 }
