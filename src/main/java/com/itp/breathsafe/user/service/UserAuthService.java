@@ -63,6 +63,7 @@ public class UserAuthService {
         loginResponse.setToken(jwtService.generateToken(savedUser));
 
         return loginResponse;
+
     }
 
 
