@@ -1,10 +1,12 @@
 package com.itp.breathsafe.user.service;
 
+import com.itp.breathsafe.common.exception.CustomException;
 import com.itp.breathsafe.user.dto.LoginRequestDTO;
 import com.itp.breathsafe.user.dto.LoginResponseDTO;
+import com.itp.breathsafe.user.dto.UserRegisterDTO;
 import com.itp.breathsafe.user.entity.User;
+import com.itp.breathsafe.user.enums.Role;
 import com.itp.breathsafe.user.repository.UserRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,28 +44,21 @@ public class UserAuthService {
     }
 
 
-    // Create User
-    public LoginResponseDTO createNewUser(@Valid LoginRequestDTO userDTO) {
-        // Check if username already exists
-        if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
-            throw new RuntimeException("Username already exists!");
+    public void createNewUser(UserRegisterDTO userRegisterDTO) {
+
+        if (userRepository.findByUsername(userRegisterDTO.getUsername()).isPresent()) {
+            throw new CustomException("Username already exists!");
         }
 
-        // Create new user entity
         User user = new User();
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setUsername(userRegisterDTO.getUsername());
+        user.setEmail(userRegisterDTO.getEmail());
+        user.setFirstName(userRegisterDTO.getFirstName());
+        user.setLastName(userRegisterDTO.getLastName());
+        user.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
+        user.setRole(Role.valueOf(userRegisterDTO.getRole()));
 
-
-        // Save to DB
-        User savedUser = userRepository.save(user);
-
-        // Generate token after registration
-        LoginResponseDTO loginResponse = new LoginResponseDTO(savedUser);
-        loginResponse.setToken(jwtService.generateToken(savedUser));
-
-        return loginResponse;
-
+        userRepository.save(user);
     }
 
 
