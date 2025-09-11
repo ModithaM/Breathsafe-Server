@@ -7,10 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/sensorRequests")
@@ -23,11 +20,20 @@ public class SensorRequestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createSensorRequest(
+    public ResponseEntity<Void> createSensorRequest(
             @Valid @RequestBody RequestUpsertDTO requestUpsertDTO,
             @AuthenticationPrincipal User user
     ) {
         sensorRequestService.createSensorRequest(requestUpsertDTO, user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSensorRequest(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user
+    ) {
+        sensorRequestService.deleteSensorRequest(id, user);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

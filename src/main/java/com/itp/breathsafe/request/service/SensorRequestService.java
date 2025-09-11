@@ -17,6 +17,13 @@ public class SensorRequestService {
         this.sensorRequestRepository = sensorRequestRepository;
     }
 
+    /**
+     * Create a new sensor installation request.
+     *
+     * @param requestUpsertDTO The DTO containing request details.
+     * @param requestedBy      The user making the request.
+     * @throws CustomException If there is an error during creation.
+     */
     @Transactional
     public void createSensorRequest(RequestUpsertDTO requestUpsertDTO , User requestedBy) {
         try{
@@ -32,5 +39,28 @@ public class SensorRequestService {
         } catch (Exception e){
             throw new CustomException("Failed to create sensor request", e);
         }
+    }
+
+    /**
+     * Delete a sensor installation request.
+     *
+     * @param id   The ID of the request to delete.
+     * @param user The user attempting to delete the request.
+     * @throws CustomException If the request is not found, the user is not authorized, or the request is not pending.
+     */
+    @Transactional
+    public void deleteSensorRequest(Long id, User user) {
+        SensorInstallationRequest sensorRequest = sensorRequestRepository.findById(id)
+                .orElseThrow(() -> new CustomException("Sensor request not found"));
+
+        if (!sensorRequest.getRequester().getId().equals(user.getId())) {
+            throw new CustomException("You are not authorized to delete this request");
+        }
+
+        if (sensorRequest.getStatus() != RequestStatus.PENDING) {
+            throw new CustomException("Only pending requests can be deleted");
+        }
+
+        sensorRequestRepository.delete(sensorRequest);
     }
 }
