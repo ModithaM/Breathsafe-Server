@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class UserAuthController {
-    @Autowired
-    UserAuthService userAuthService;
+
+    private final UserAuthService userAuthService;
+
+    public UserAuthController(UserAuthService userAuthService) {
+        this.userAuthService = userAuthService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(

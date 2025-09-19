@@ -11,7 +11,7 @@ public class Constants {
             "/api/admin/**"
     };
     public static final String[] ALL_MEMBER_ENDPOINTS = {
-            "/api/users/**",
+            "/api/v1/sensorRequests/**",
             "/api/project/**",
             "/api/member/**"
     };
