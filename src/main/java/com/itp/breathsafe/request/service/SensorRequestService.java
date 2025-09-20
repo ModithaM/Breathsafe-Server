@@ -7,6 +7,7 @@ import com.itp.breathsafe.request.entity.SensorInstallationRequest;
 import com.itp.breathsafe.request.enums.RequestStatus;
 import com.itp.breathsafe.request.repository.SensorInstallationRequestRepository;
 import com.itp.breathsafe.user.entity.User;
+import com.itp.breathsafe.user.enums.Role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,6 +77,24 @@ public class SensorRequestService {
      */
     public List<RequestDTO> getLoggedInUserSensorRequests(User user) {
         return sensorRequestRepository.findByRequesterIdOrderByCreatedAtDesc(user.getId())
+                .stream()
+                .map(RequestDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Retrieve all sensor installation requests
+     *
+     * @throws CustomException If the user is not authorized.
+     * @return A list of RequestDTOs
+     */
+    public List<RequestDTO> getAllSensorRequests(User user) {
+
+        if (user.getRole() != Role.ADMIN) {
+            throw new CustomException("Unauthorized access!");
+        }
+
+        return sensorRequestRepository.findAll()
                 .stream()
                 .map(RequestDTO::new)
                 .collect(Collectors.toList());

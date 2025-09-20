@@ -46,4 +46,6 @@ public class SensorRequestController {
     ) {
         return ResponseEntity.ok(sensorRequestService.getLoggedInUserSensorRequests(user));
     }
+
+
 }

@@ -24,6 +24,9 @@ public class RequestDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    private Long requesterId;
+    private String requesterName;
+
     private Long approvedById;
     private String approvedByName;
 
@@ -42,6 +45,9 @@ public class RequestDTO {
         this.rejectedAt = sensorInstallationRequest.getRejectedAt();
         this.createdAt = sensorInstallationRequest.getCreatedAt();
         this.updatedAt = sensorInstallationRequest.getUpdatedAt();
+
+        this.requesterId = sensorInstallationRequest.getRequester().getId();
+        this.requesterName = sensorInstallationRequest.getRequester().getFirstName();
 
         if (sensorInstallationRequest.getApprovedBy() != null) {
             this.approvedById = sensorInstallationRequest.getApprovedBy().getId();

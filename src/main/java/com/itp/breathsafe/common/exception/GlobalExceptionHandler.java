@@ -14,6 +14,14 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(value = {Exception.class})
+    public ResponseEntity<Object> handleAnyException(Exception ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("message", "An unexpected error occurred. Please contact support.");
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
