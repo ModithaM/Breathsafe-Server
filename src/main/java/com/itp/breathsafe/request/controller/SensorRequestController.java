@@ -1,5 +1,6 @@
 package com.itp.breathsafe.request.controller;
 
+import com.itp.breathsafe.request.dto.RequestDTO;
 import com.itp.breathsafe.request.dto.RequestUpsertDTO;
 import com.itp.breathsafe.request.service.SensorRequestService;
 import com.itp.breathsafe.user.entity.User;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/sensorRequests")
@@ -36,4 +39,13 @@ public class SensorRequestController {
         sensorRequestService.deleteSensorRequest(id, user);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @GetMapping("/myRequests")
+    public ResponseEntity<List<RequestDTO>> getLoggedInUserSensorRequests(
+            @AuthenticationPrincipal User user
+    ) {
+        return ResponseEntity.ok(sensorRequestService.getLoggedInUserSensorRequests(user));
+    }
+
+
 }
