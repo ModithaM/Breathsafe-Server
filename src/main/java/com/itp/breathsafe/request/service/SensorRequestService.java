@@ -1,6 +1,7 @@
 package com.itp.breathsafe.request.service;
 
 import com.itp.breathsafe.common.exception.CustomException;
+import com.itp.breathsafe.request.dto.RequestDTO;
 import com.itp.breathsafe.request.dto.RequestUpsertDTO;
 import com.itp.breathsafe.request.entity.SensorInstallationRequest;
 import com.itp.breathsafe.request.enums.RequestStatus;
@@ -8,6 +9,9 @@ import com.itp.breathsafe.request.repository.SensorInstallationRequestRepository
 import com.itp.breathsafe.user.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SensorRequestService {
@@ -62,5 +66,18 @@ public class SensorRequestService {
         }
 
         sensorRequestRepository.delete(sensorRequest);
+    }
+
+    /**
+     * Retrieve all sensor installation requests made by the logged-in user.
+     *
+     * @param user The logged-in user.
+     * @return A list of RequestDTOs representing the user's sensor requests.
+     */
+    public List<RequestDTO> getLoggedInUserSensorRequests(User user) {
+        return sensorRequestRepository.findByRequesterIdOrderByCreatedAtDesc(user.getId())
+                .stream()
+                .map(RequestDTO::new)
+                .collect(Collectors.toList());
     }
 }
