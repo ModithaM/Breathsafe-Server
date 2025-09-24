@@ -5,14 +5,13 @@ public class Constants {
             "/api/v1/auth/**",
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/swagger-ui.html"
+            "/swagger-ui.html",
+            "/api/v1/publicData/**"
     };
     public static final String[] ADMIN_ENDPOINTS = {
             "/api/admin/**"
     };
     public static final String[] ALL_MEMBER_ENDPOINTS = {
-            "/api/v1/sensorRequests/**",
-            "/api/project/**",
-            "/api/member/**"
+            "/api/v1/sensorRequests/**"
     };
 }
