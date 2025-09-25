@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class SensorDataService {
 
     private final SensorDataRepository sensorDataRepository;
@@ -23,6 +22,7 @@ public class SensorDataService {
         this.sensorRepository = sensorRepository;
     }
 
+    @Transactional
     public SensorData createSensorData(DataUpsertDTO dataUpsertDTO) {
 
         //Check sensor is in the database

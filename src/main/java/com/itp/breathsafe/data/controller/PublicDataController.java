@@ -25,13 +25,9 @@ public class PublicDataController {
     @PostMapping
     public ResponseEntity<String> addSensorData(@Valid @RequestBody DataUpsertDTO dataUpsertDTO) {
 
-        try {
-            //call service to save data
-            SensorData sensorData = sensorDataService.createSensorData(dataUpsertDTO);
+        //call service to save data
+        SensorData sensorData = sensorDataService.createSensorData(dataUpsertDTO);
 
-            return  ResponseEntity.status(HttpStatus.CREATED).body("Data saved successfully with id: " + sensorData.getId());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error:" + e.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body("Data saved successfully with id: " + sensorData.getId());
     }
 }
