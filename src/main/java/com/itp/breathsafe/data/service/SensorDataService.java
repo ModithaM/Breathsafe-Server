@@ -1,5 +1,6 @@
 package com.itp.breathsafe.data.service;
 
+import com.itp.breathsafe.common.exception.CustomException;
 import com.itp.breathsafe.data.dto.DataUpsertDTO;
 import com.itp.breathsafe.data.entity.SensorData;
 import com.itp.breathsafe.data.enums.AQICategory;
@@ -8,8 +9,6 @@ import com.itp.breathsafe.sensor.entity.Sensor;
 import com.itp.breathsafe.sensor.repository.SensorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 public class SensorDataService {
@@ -23,14 +22,11 @@ public class SensorDataService {
     }
 
     @Transactional
-    public SensorData createSensorData(DataUpsertDTO dataUpsertDTO) {
+    public void createSensorData(DataUpsertDTO dataUpsertDTO) {
 
         //Check sensor is in the database
-        Optional<Sensor> sensorOpt = sensorRepository.findById(dataUpsertDTO.getSensorId());
-        if(sensorOpt.isEmpty()) {
-            throw new RuntimeException("Sensor with id " + dataUpsertDTO.getSensorId() + " not found");
-        }
-        Sensor sensor = sensorOpt.get();
+        Sensor sensor = sensorRepository.findById(dataUpsertDTO.getSensorId())
+                .orElseThrow(() -> new CustomException("Sensor not found with id: " + dataUpsertDTO.getSensorId()));
 
         AQICategory category = findAQICategory(dataUpsertDTO.getAqiValue());
 
@@ -42,7 +38,7 @@ public class SensorDataService {
         sensorData.setAqiCategory(category);
         sensorData.setSensor(sensor);
 
-        return sensorDataRepository.save(sensorData);
+        sensorDataRepository.save(sensorData);
     }
 
     //find AQI Category based on AQI value
