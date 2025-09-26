@@ -1,8 +1,8 @@
 package com.itp.breathsafe.request.controller;
 
+import com.itp.breathsafe.request.dto.RequestApproveDTO;
 import com.itp.breathsafe.request.dto.RequestDTO;
 import com.itp.breathsafe.request.dto.RequestUpsertDTO;
-import com.itp.breathsafe.request.entity.SensorInstallationRequest;
 import com.itp.breathsafe.request.service.SensorRequestService;
 import com.itp.breathsafe.user.entity.User;
 import jakarta.validation.Valid;
@@ -64,5 +64,25 @@ public class SensorRequestController {
     ) {
         List<RequestDTO> requests = sensorRequestService.getAllSensorRequests(user);
         return ResponseEntity.ok(requests);
+    }
+
+    @PatchMapping("/{requestId}/approve")
+    public ResponseEntity<Void> approveSensorRequest(
+            @PathVariable Long requestId,
+            @RequestBody RequestApproveDTO requestApproveDTO,
+            @AuthenticationPrincipal User user
+    ) {
+        sensorRequestService.approveSensorRequest(requestId, requestApproveDTO ,user);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{requestId}/reject")
+    public ResponseEntity<Void> rejectSensorRequest(
+            @PathVariable Long requestId,
+            @RequestBody RequestApproveDTO requestApproveDTO,
+            @AuthenticationPrincipal User user
+    ) {
+        sensorRequestService.rejectSensorRequest(requestId, requestApproveDTO ,user);
+        return ResponseEntity.ok().build();
     }
 }
