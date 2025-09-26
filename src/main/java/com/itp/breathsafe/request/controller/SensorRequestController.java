@@ -57,4 +57,12 @@ public class SensorRequestController {
         sensorRequestService.updateSensorRequest(requestUpsertDTO, id, user.getId());
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<RequestDTO>> getPendingSensorRequests(
+            @AuthenticationPrincipal User user
+    ) {
+        List<RequestDTO> requests = sensorRequestService.getAllSensorRequests(user);
+        return ResponseEntity.ok(requests);
+    }
 }
