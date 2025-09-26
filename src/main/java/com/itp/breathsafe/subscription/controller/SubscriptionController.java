@@ -1,13 +1,15 @@
 package com.itp.breathsafe.subscription.controller;
 
-import com.itp.breathsafe.subscription.dto.SubscriptionUpsertDTO;
+import com.itp.breathsafe.subscription.dto.SubscriptionCreateDTO;
+import com.itp.breathsafe.subscription.dto.SubscriptionResponseDTO;
+import com.itp.breathsafe.subscription.dto.SubscriptionUpdateDTO;
 import com.itp.breathsafe.subscription.service.SubscriptionService;
-import com.itp.breathsafe.user.entity.User;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/subscriptions")
@@ -19,27 +21,36 @@ public class SubscriptionController {
         this.subscriptionService = subscriptionService;
     }
 
-    /**
-     * Create a new subscription
-     */
-    @PostMapping
-    public ResponseEntity<Void> createSubscription(
-            @Valid @RequestBody SubscriptionUpsertDTO subscriptionDTO,
-            @AuthenticationPrincipal User user
-    ) {
-        subscriptionService.createSubscription(subscriptionDTO, user);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    @GetMapping("/my")
+    public ResponseEntity<List<SubscriptionResponseDTO>> mySubscriptions(Principal principal) {
+        return ResponseEntity.ok(subscriptionService.getMySubscriptions(principal));
     }
 
-    /**
-     * Delete a subscription by ID
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSubscription(
-            @PathVariable Long id,
-            @AuthenticationPrincipal User user
+    @PostMapping
+    public ResponseEntity<SubscriptionResponseDTO> subscribe(
+            Principal principal,
+            @Valid @RequestBody SubscriptionCreateDTO dto
     ) {
-        subscriptionService.deleteSubscription(id, user);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.ok(subscriptionService.subscribe(principal, dto));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<SubscriptionResponseDTO> update(
+            Principal principal,
+            @PathVariable Long id,
+            @Valid @RequestBody SubscriptionUpdateDTO dto
+    ) {
+        return ResponseEntity.ok(subscriptionService.update(principal, id, dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> unsubscribe(Principal principal, @PathVariable Long id) {
+        subscriptionService.unsubscribe(principal, id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<Boolean> check(Principal principal, @RequestParam Long sensorId) {
+        return ResponseEntity.ok(subscriptionService.isSubscribed(principal, sensorId));
     }
 }
