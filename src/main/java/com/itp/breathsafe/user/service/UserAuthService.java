@@ -1,5 +1,6 @@
 package com.itp.breathsafe.user.service;
 
+import com.itp.breathsafe.common.events.UserRegisteredEvent;
 import com.itp.breathsafe.common.exception.CustomException;
 import com.itp.breathsafe.user.dto.LoginRequestDTO;
 import com.itp.breathsafe.user.dto.LoginResponseDTO;
@@ -8,6 +9,7 @@ import com.itp.breathsafe.user.entity.User;
 import com.itp.breathsafe.user.enums.Role;
 import com.itp.breathsafe.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,12 +23,14 @@ public class UserAuthService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final ApplicationEventPublisher publisher;
 
-    public UserAuthService(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public UserAuthService(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtService jwtService, ApplicationEventPublisher publisher) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.publisher = publisher;
     }
 
     public LoginResponseDTO authenticateUser(LoginRequestDTO loginRequest) {
@@ -60,8 +64,6 @@ public class UserAuthService {
         user.setRole(Role.valueOf(userRegisterDTO.getRole()));
 
         userRepository.save(user);
+        publisher.publishEvent(new UserRegisteredEvent(user.getEmail()));
     }
-
-
-
 }
