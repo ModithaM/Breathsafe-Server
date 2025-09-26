@@ -109,7 +109,7 @@ public class SensorRequestService {
      * @throws CustomException If the request is not found, the user is not authorized, or the request is not pending.
      */
     @Transactional
-    public SensorInstallationRequest updateSensorRequest(RequestUpsertDTO requestUpsertDTO, Long id, Long userId) {
+    public void updateSensorRequest(RequestUpsertDTO requestUpsertDTO, Long id, Long userId) {
         SensorInstallationRequest sensorRequest = sensorRequestRepository.findById(id)
                 .orElseThrow(() -> new CustomException("Sensor request not found"));
 
@@ -127,7 +127,5 @@ public class SensorRequestService {
         sensorRequest.setJustification(requestUpsertDTO.getJustification());
 
         sensorRequestRepository.save(sensorRequest);
-
-        return sensorRequest;
     }
 }

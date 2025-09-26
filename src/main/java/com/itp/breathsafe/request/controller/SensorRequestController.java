@@ -49,11 +49,12 @@ public class SensorRequestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SensorInstallationRequest> updateSensorRequest(
+    public ResponseEntity<Void> updateSensorRequest(
             @Valid @RequestBody RequestUpsertDTO requestUpsertDTO,
             @PathVariable Long id,
             @AuthenticationPrincipal User user
     ) {
-        return ResponseEntity.ok(sensorRequestService.updateSensorRequest(requestUpsertDTO, id, user.getId()));
+        sensorRequestService.updateSensorRequest(requestUpsertDTO, id, user.getId());
+        return ResponseEntity.ok().build();
     }
 }
