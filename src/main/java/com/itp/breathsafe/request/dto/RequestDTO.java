@@ -49,9 +49,9 @@ public class RequestDTO {
         this.requesterId = sensorInstallationRequest.getRequester().getId();
         this.requesterName = sensorInstallationRequest.getRequester().getFirstName();
 
-        if (sensorInstallationRequest.getApprovedBy() != null) {
-            this.approvedById = sensorInstallationRequest.getApprovedBy().getId();
-            this.approvedByName = sensorInstallationRequest.getApprovedBy().getFirstName();
+        if (sensorInstallationRequest.getReviewedBy() != null) {
+            this.approvedById = sensorInstallationRequest.getReviewedBy().getId();
+            this.approvedByName = sensorInstallationRequest.getReviewedBy().getFirstName();
         }
 
         if (sensorInstallationRequest.getAssignedSensor() != null) {
