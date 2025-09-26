@@ -1,13 +1,13 @@
 package com.itp.breathsafe.sensor.controller;
 
+import com.itp.breathsafe.sensor.dto.SensorUpdateDTO;
 import com.itp.breathsafe.sensor.dto.SensorUpsertDTO;
 import com.itp.breathsafe.sensor.service.SensorService;
+import com.itp.breathsafe.user.entity.User;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1/sensors")
 @RestController
@@ -21,9 +21,20 @@ public class SensorController {
 
     @PostMapping
     public ResponseEntity<Void> createSensor(
-            @Valid @RequestBody SensorUpsertDTO sensorUpsertDTO
+            @Valid @RequestBody SensorUpsertDTO sensorUpsertDTO,
+            @AuthenticationPrincipal User user
     ) {
-        sensorService.createSensor(sensorUpsertDTO);
+        sensorService.createSensor(sensorUpsertDTO, user.getRole());
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateSensor(
+            @Valid @RequestBody SensorUpdateDTO sensorUpdateDTO,
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user
+    ) {
+        sensorService.updateSensor(sensorUpdateDTO, id, user.getRole());
         return ResponseEntity.ok().build();
     }
 }
