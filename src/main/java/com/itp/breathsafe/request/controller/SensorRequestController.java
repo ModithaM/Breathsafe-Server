@@ -2,6 +2,7 @@ package com.itp.breathsafe.request.controller;
 
 import com.itp.breathsafe.request.dto.RequestDTO;
 import com.itp.breathsafe.request.dto.RequestUpsertDTO;
+import com.itp.breathsafe.request.entity.SensorInstallationRequest;
 import com.itp.breathsafe.request.service.SensorRequestService;
 import com.itp.breathsafe.user.entity.User;
 import jakarta.validation.Valid;
@@ -47,5 +48,12 @@ public class SensorRequestController {
         return ResponseEntity.ok(sensorRequestService.getLoggedInUserSensorRequests(user));
     }
 
-
+    @PutMapping("/{id}")
+    public ResponseEntity<SensorInstallationRequest> updateSensorRequest(
+            @Valid @RequestBody RequestUpsertDTO requestUpsertDTO,
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user
+    ) {
+        return ResponseEntity.ok(sensorRequestService.updateSensorRequest(requestUpsertDTO, id, user.getId()));
+    }
 }

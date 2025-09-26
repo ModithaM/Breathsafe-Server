@@ -99,4 +99,35 @@ public class SensorRequestService {
                 .map(RequestDTO::new)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Update a sensor installation request.
+     *
+     * @param requestUpsertDTO The DTO containing updated request details.
+     * @param id               The ID of the request to update.
+     * @param userId           The ID of the user attempting to update the request.
+     * @throws CustomException If the request is not found, the user is not authorized, or the request is not pending.
+     */
+    @Transactional
+    public SensorInstallationRequest updateSensorRequest(RequestUpsertDTO requestUpsertDTO, Long id, Long userId) {
+        SensorInstallationRequest sensorRequest = sensorRequestRepository.findById(id)
+                .orElseThrow(() -> new CustomException("Sensor request not found"));
+
+        if (!sensorRequest.getRequester().getId().equals(userId)) {
+            throw new CustomException("You are not authorized to update this request");
+        }
+
+        if (sensorRequest.getStatus() != RequestStatus.PENDING) {
+            throw new CustomException("Only pending requests can be updated");
+        }
+
+        sensorRequest.setRequestedLocation(requestUpsertDTO.getRequestedLocation());
+        sensorRequest.setLatitude(requestUpsertDTO.getLatitude());
+        sensorRequest.setLongitude(requestUpsertDTO.getLongitude());
+        sensorRequest.setJustification(requestUpsertDTO.getJustification());
+
+        sensorRequestRepository.save(sensorRequest);
+
+        return sensorRequest;
+    }
 }
