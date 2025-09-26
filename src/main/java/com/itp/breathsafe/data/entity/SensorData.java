@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -35,6 +36,7 @@ public class SensorData {
     private AQICategory aqiCategory;
 
     @Column(name = "timestamp", nullable = false)
+    @CreationTimestamp
     private LocalDateTime timestamp;
 
     @ManyToOne(fetch = FetchType.LAZY)
