@@ -12,5 +12,4 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
     List<Subscription> findByUserIdAndIsActiveTrue(Long userId);
     boolean existsByUserIdAndSensorIdAndIsActiveTrue(Long userId, Long sensorId);
     Optional<Subscription> findByIdAndUserId(Long id, Long userId);
-    Optional<Subscription> findByUserIdAndSensorId(Long userId, Long sensorId);
 }
