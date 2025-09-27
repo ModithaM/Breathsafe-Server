@@ -2,7 +2,6 @@ package com.itp.breathsafe.data.controller;
 
 import com.itp.breathsafe.data.dto.DataUpsertDTO;
 import com.itp.breathsafe.data.service.SensorDataService;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;

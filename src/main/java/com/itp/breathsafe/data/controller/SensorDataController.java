@@ -1,10 +1,15 @@
 package com.itp.breathsafe.data.controller;
 
+import com.itp.breathsafe.data.dto.SensorDataDisplayDTO;
 import com.itp.breathsafe.data.service.SensorDataService;
+import com.itp.breathsafe.user.entity.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/sensorData")
@@ -17,8 +22,10 @@ public class SensorDataController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getLastTwelveRecords() {
-        // Implementation for fetching the last twelve records
-        return ResponseEntity.ok().build();
+    public ResponseEntity<List<SensorDataDisplayDTO>> getSensorsWithData(
+            @AuthenticationPrincipal User user
+            ) {
+        List<SensorDataDisplayDTO> sensorData = sensorDataService.getSensorsWithLatestData(user);
+        return ResponseEntity.ok(sensorData);
     }
 }
