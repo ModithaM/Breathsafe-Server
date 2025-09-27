@@ -24,7 +24,7 @@ public class SensorService {
      */
     public void createSensor(SensorUpsertDTO sensorUpsertDTO, Role role) {
 
-        if (role != Role.ADMIN){
+        if (role != Role.ADMIN) {
             throw new CustomException("Unauthorized request!");
         }
 
@@ -49,12 +49,12 @@ public class SensorService {
      * Update Sensor Details
      *
      * @param sensorUpdateDTO updated details
-     * @param id sensor id
-     * @param role Updating users role
+     * @param id              sensor id
+     * @param role            Updating users role
      */
     public void updateSensor(SensorUpdateDTO sensorUpdateDTO, long id, Role role) {
 
-        if (role != Role.ADMIN){
+        if (role != Role.ADMIN) {
             throw new CustomException("Unauthorized request!");
         }
 
@@ -75,4 +75,19 @@ public class SensorService {
             throw new CustomException("Failed to update sensor details");
         }
     }
+
+
+    public void deleteSensor(Long id, Role role) {
+
+        if (role != Role.ADMIN) {
+            throw new CustomException("Unauthorized request!");
+        }
+
+        Sensor sensor = sensorRepository.findById(id)
+                .orElseThrow(() -> new CustomException("Sensor not found"));
+
+        sensorRepository.delete(sensor);
+    }
 }
+
+

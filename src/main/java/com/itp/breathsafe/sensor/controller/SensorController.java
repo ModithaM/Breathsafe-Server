@@ -37,4 +37,13 @@ public class SensorController {
         sensorService.updateSensor(sensorUpdateDTO, id, user.getRole());
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSensor(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user
+    ){
+        sensorService.deleteSensor(id, user.getRole());
+        return ResponseEntity.ok().build();
+    }
 }
