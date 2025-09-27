@@ -44,6 +44,6 @@ public class SensorController {
             @AuthenticationPrincipal User user
     ){
         sensorService.deleteSensor(id, user.getRole());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
