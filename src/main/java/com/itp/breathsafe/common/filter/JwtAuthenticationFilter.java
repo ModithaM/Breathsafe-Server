@@ -2,7 +2,6 @@ package com.itp.breathsafe.common.filter;
 
 import com.itp.breathsafe.common.exception.CustomException;
 import com.itp.breathsafe.user.service.JwtService;
-import java.io.IOException;
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
