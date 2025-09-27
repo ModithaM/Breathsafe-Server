@@ -20,6 +20,7 @@ public interface SensorDataRepository extends JpaRepository<SensorData, Long> {
             s.longitude,
             s.status,
             s.createdAt,
+            d.id,
             d.co2Level,
             d.aqiValue,
             CAST(d.timestamp AS string)
@@ -33,4 +34,6 @@ public interface SensorDataRepository extends JpaRepository<SensorData, Long> {
         )
         """)
     List<SensorDataDisplayDTO> getSensorsWithLatestData();
+
+    void deleteAllDataById(Long dataId);
 }

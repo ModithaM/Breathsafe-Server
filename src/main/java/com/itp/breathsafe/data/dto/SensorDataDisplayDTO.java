@@ -19,6 +19,7 @@ public class SensorDataDisplayDTO {
     private SensorStatus sensorStatus;
     private LocalDateTime createdAt;
 
+    private Long dataId;
     private Double co2Level;
     private Integer aqiValue;
     private String timestamp;
