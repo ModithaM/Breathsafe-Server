@@ -1,5 +1,7 @@
 package com.itp.breathsafe.request.service;
 
+import com.itp.breathsafe.common.events.CreateRequestEvent;
+import com.itp.breathsafe.common.events.UserRegisteredEvent;
 import com.itp.breathsafe.common.exception.CustomException;
 import com.itp.breathsafe.request.dto.RequestApproveDTO;
 import com.itp.breathsafe.request.dto.RequestDTO;
@@ -11,6 +13,7 @@ import com.itp.breathsafe.sensor.entity.Sensor;
 import com.itp.breathsafe.sensor.repository.SensorRepository;
 import com.itp.breathsafe.user.entity.User;
 import com.itp.breathsafe.user.enums.Role;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +25,12 @@ import java.util.stream.Collectors;
 public class SensorRequestService {
     private final SensorInstallationRequestRepository sensorRequestRepository;
     private final SensorRepository sensorRepository;
+    private final ApplicationEventPublisher publisher;
 
-    public SensorRequestService(SensorInstallationRequestRepository sensorRequestRepository, SensorRepository sensorRepository) {
+    public SensorRequestService(SensorInstallationRequestRepository sensorRequestRepository, SensorRepository sensorRepository, ApplicationEventPublisher publisher) {
         this.sensorRequestRepository = sensorRequestRepository;
         this.sensorRepository = sensorRepository;
+        this.publisher = publisher;
     }
 
     /**
@@ -47,6 +52,7 @@ public class SensorRequestService {
             sensorRequest.setRequester(requestedBy);
 
             sensorRequestRepository.save(sensorRequest);
+            publisher.publishEvent(new CreateRequestEvent(requestedBy.getEmail()));
         } catch (Exception e){
             throw new CustomException("Failed to create sensor request", e);
         }
