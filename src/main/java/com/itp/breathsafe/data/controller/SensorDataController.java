@@ -1,8 +1,10 @@
 package com.itp.breathsafe.data.controller;
 
+import com.itp.breathsafe.data.dto.DataUpdateDTO;
 import com.itp.breathsafe.data.dto.SensorDataDisplayDTO;
 import com.itp.breathsafe.data.service.SensorDataService;
 import com.itp.breathsafe.user.entity.User;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -34,5 +36,15 @@ public class SensorDataController {
     ) {
         sensorDataService.deleteAllDataById(user, dataId);
         return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping
+    public ResponseEntity<SensorDataDisplayDTO> updateSensorData(
+            @Valid @RequestBody DataUpdateDTO dataUpdateDTO,
+            @AuthenticationPrincipal User user
+    ) {
+        SensorDataDisplayDTO updateData = sensorDataService.updateSensorData(dataUpdateDTO, user);
+
+        return ResponseEntity.ok(updateData);
     }
 }
