@@ -76,7 +76,6 @@ public class SensorService {
         }
     }
 
-
     public void deleteSensor(Long id, Role role) {
 
         if (role != Role.ADMIN) {
