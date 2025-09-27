@@ -5,9 +5,8 @@ import com.itp.breathsafe.user.entity.User;
 import com.itp.breathsafe.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -24,5 +23,19 @@ public class UserController {
             @AuthenticationPrincipal User user
     ){
         return ResponseEntity.ok(userService.getCurrentUser(user));
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> updateCurrentUser(
+            @RequestBody UserDTO userDTO
+    ){
+        userService.updateCurrentUser(userDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteCurrentUser(@AuthenticationPrincipal User user){
+        userService.deleteCurrentUser(user);
+        return ResponseEntity.ok().build();
     }
 }
