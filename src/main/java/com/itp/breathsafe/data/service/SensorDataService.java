@@ -2,13 +2,18 @@ package com.itp.breathsafe.data.service;
 
 import com.itp.breathsafe.common.exception.CustomException;
 import com.itp.breathsafe.data.dto.DataUpsertDTO;
+import com.itp.breathsafe.data.dto.SensorDataDisplayDTO;
 import com.itp.breathsafe.data.entity.SensorData;
 import com.itp.breathsafe.data.enums.AQICategory;
 import com.itp.breathsafe.data.repository.SensorDataRepository;
 import com.itp.breathsafe.sensor.entity.Sensor;
 import com.itp.breathsafe.sensor.repository.SensorRepository;
+import com.itp.breathsafe.user.entity.User;
+import com.itp.breathsafe.user.enums.Role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class SensorDataService {
@@ -39,6 +44,15 @@ public class SensorDataService {
         sensorData.setSensor(sensor);
 
         sensorDataRepository.save(sensorData);
+    }
+
+    //return list of sensors with latest data
+    public List<SensorDataDisplayDTO> getSensorsWithLatestData(User user) {
+        if(user.getRole() != Role.ADMIN) {
+            throw new CustomException("Unauthorized access");
+        }
+
+        return  sensorDataRepository.getSensorsWithLatestData();
     }
 
     //find AQI Category based on AQI value
