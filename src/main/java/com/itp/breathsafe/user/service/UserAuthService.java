@@ -15,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserAuthService {
@@ -49,6 +50,7 @@ public class UserAuthService {
     }
 
 
+    @Transactional
     public void createNewUser(UserRegisterDTO userRegisterDTO) {
 
         if (userRepository.findByUsername(userRegisterDTO.getUsername()).isPresent()) {
