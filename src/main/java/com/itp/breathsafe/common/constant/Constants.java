@@ -13,6 +13,7 @@ public class Constants {
     };
     public static final String[] ALL_MEMBER_ENDPOINTS = {
             "/api/v1/sensorRequests/**",
-            "/api/v1/subscriptions/**"
+            "/api/v1/subscriptions/**",
+            "/api/v1/user/**"
     };
 }
