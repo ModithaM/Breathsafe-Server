@@ -55,6 +55,15 @@ public class SensorDataService {
         return  sensorDataRepository.getSensorsWithLatestData();
     }
 
+    @Transactional
+    public void deleteAllDataById(User user, Long dataId) {
+        if(user.getRole() != Role.ADMIN) {
+            throw new CustomException("Unauthorized access");
+        }
+
+        sensorDataRepository.deleteAllDataById(dataId);
+    }
+
     //find AQI Category based on AQI value
     private AQICategory findAQICategory(Integer aqiValue) {
         if(aqiValue>=0 && aqiValue<=50) {

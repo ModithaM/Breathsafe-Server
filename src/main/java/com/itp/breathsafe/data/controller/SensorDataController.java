@@ -5,9 +5,7 @@ import com.itp.breathsafe.data.service.SensorDataService;
 import com.itp.breathsafe.user.entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +25,14 @@ public class SensorDataController {
             ) {
         List<SensorDataDisplayDTO> sensorData = sensorDataService.getSensorsWithLatestData(user);
         return ResponseEntity.ok(sensorData);
+    }
+
+    @DeleteMapping("/{dataId}")
+    public ResponseEntity<Void> deleteAllDataById(
+            @PathVariable Long dataId,
+            @AuthenticationPrincipal User user
+    ) {
+        sensorDataService.deleteAllDataById(user, dataId);
+        return ResponseEntity.ok().build();
     }
 }
