@@ -1,4 +1,4 @@
-name: Build-and-Test
+name: Build Spring Boot Application
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Cache Maven packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
@@ -28,9 +28,3 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean compile -DskipTests
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: jar-files
-          path: target/*.jar
