@@ -66,7 +66,6 @@ public class SensorDataService {
         sensorDataRepository.deleteAllDataById(dataId);
     }
 
-    //edit AQI value and CO2 level by dataId
     @Transactional
     public SensorDataDisplayDTO updateSensorData(DataUpdateDTO dataUpdateDTO, User user) {
         if(user.getRole() != Role.ADMIN) {
@@ -74,13 +73,11 @@ public class SensorDataService {
         }
 
         // Check if the record exists
-        SensorData sensorData = sensorDataRepository.findById(dataUpdateDTO.getDataId())
+        sensorDataRepository.findById(dataUpdateDTO.getDataId())
                 .orElseThrow(() -> new CustomException("Sensor data not found"));
 
-        //Find AQI Category
         AQICategory category = findAQICategory(dataUpdateDTO.getAqiValue());
 
-        //do the update
         int updatedRows = sensorDataRepository.updateAqiAndCo2Levels(
                 dataUpdateDTO.getDataId(),
                 dataUpdateDTO.getAqiValue(),
@@ -95,7 +92,6 @@ public class SensorDataService {
         SensorData updatedData = sensorDataRepository.findById(dataUpdateDTO.getDataId())
                 .orElseThrow(() -> new CustomException("Sensor data not found after update"));
 
-        // Replace the problematic section with:
         return new SensorDataDisplayDTO(
                 updatedData.getSensor().getId(),
                 updatedData.getSensor().getName(),
