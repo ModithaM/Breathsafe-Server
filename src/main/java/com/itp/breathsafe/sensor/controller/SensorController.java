@@ -1,5 +1,6 @@
 package com.itp.breathsafe.sensor.controller;
 
+import com.itp.breathsafe.sensor.dto.SensorReadDTO;
 import com.itp.breathsafe.sensor.dto.SensorUpdateDTO;
 import com.itp.breathsafe.sensor.dto.SensorUpsertDTO;
 import com.itp.breathsafe.sensor.service.SensorService;
@@ -8,6 +9,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/api/v1/sensors")
 @RestController
@@ -45,5 +48,11 @@ public class SensorController {
     ){
         sensorService.deleteSensor(id, user.getRole());
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SensorReadDTO>> getAllSensors() {
+        List<SensorReadDTO> sensors = sensorService.getAllSensors();
+        return ResponseEntity.ok(sensors);
     }
 }

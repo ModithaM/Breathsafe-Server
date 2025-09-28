@@ -1,12 +1,16 @@
 package com.itp.breathsafe.sensor.service;
 
 import com.itp.breathsafe.common.exception.CustomException;
+import com.itp.breathsafe.sensor.dto.SensorReadDTO;
 import com.itp.breathsafe.sensor.dto.SensorUpdateDTO;
 import com.itp.breathsafe.sensor.dto.SensorUpsertDTO;
 import com.itp.breathsafe.sensor.entity.Sensor;
 import com.itp.breathsafe.sensor.repository.SensorRepository;
 import com.itp.breathsafe.user.enums.Role;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SensorService {
@@ -87,6 +91,23 @@ public class SensorService {
 
         sensorRepository.delete(sensor);
     }
+
+    public List<SensorReadDTO> getAllSensors() {
+        List<Sensor> sensors = sensorRepository.findAll();
+
+        return sensors.stream().map(sensor -> new SensorReadDTO(
+                sensor.getId(),
+                sensor.getName(),
+                sensor.getLocation(),
+                sensor.getLatitude(),
+                sensor.getLongitude(),
+                sensor.getStatus(),
+                sensor.getInstallationDate(),
+                sensor.getLastMaintenance(),
+                sensor.getBatteryLevel(),
+                sensor.getIsActive(),
+                sensor.getCreatedAt(),
+                sensor.getUpdatedAt()
+        )).collect(Collectors.toList());
+    }
 }
-
-
