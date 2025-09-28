@@ -1,6 +1,7 @@
 package com.itp.breathsafe.sensor.service;
 
 import com.itp.breathsafe.common.exception.CustomException;
+import com.itp.breathsafe.sensor.dto.SensorReadDTO;
 import com.itp.breathsafe.sensor.dto.SensorUpdateDTO;
 import com.itp.breathsafe.sensor.dto.SensorUpsertDTO;
 import com.itp.breathsafe.sensor.entity.Sensor;
@@ -87,6 +88,12 @@ public class SensorService {
 
         sensorRepository.delete(sensor);
     }
+
+
+
+    public List<SensorReadDTO> getAllSensors() {
+
+
 }
 
 
