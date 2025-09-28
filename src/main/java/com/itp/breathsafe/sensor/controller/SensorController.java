@@ -53,7 +53,6 @@ public class SensorController {
     @GetMapping
     public ResponseEntity<List<SensorReadDTO>> getAllSensors() {
         List<SensorReadDTO> sensors = sensorService.getAllSensors();
-        return ResponseEntity.ok(sensors)
-
-
+        return ResponseEntity.ok(sensors);
+    }
 }
