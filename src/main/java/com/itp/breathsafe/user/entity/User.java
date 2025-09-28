@@ -37,6 +37,16 @@ public class User implements UserDetails {
 
     private String lastName;
 
+    private String phone;
+
+    private LocalDateTime dateOfBirth;
+
+    private String address;
+
+    private String bio;
+
+    private String profileImage;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
