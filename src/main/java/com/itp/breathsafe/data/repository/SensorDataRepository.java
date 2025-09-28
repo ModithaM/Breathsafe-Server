@@ -56,7 +56,4 @@ public interface SensorDataRepository extends JpaRepository<SensorData, Long> {
             @Param("aqiCategory") AQICategory aqiCategory,
             @Param("co2Level") Integer co2Level
     );
-
-    // Helper method to find by ID
-//    Optional<SensorData> findByIdForUpdate(Long dataId);
 }
