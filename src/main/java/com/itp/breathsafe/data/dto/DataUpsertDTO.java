@@ -10,12 +10,8 @@ import lombok.NoArgsConstructor;
 public class DataUpsertDTO {
 
     private Double temperature;
-
     private Double humidity;
-
     private Double co2Level;
-
     private Integer aqiValue;
-
     private Long sensorId;
 }

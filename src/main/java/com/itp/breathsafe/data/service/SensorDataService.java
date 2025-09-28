@@ -1,6 +1,7 @@
 package com.itp.breathsafe.data.service;
 
 import com.itp.breathsafe.common.exception.CustomException;
+import com.itp.breathsafe.data.dto.DataUpdateDTO;
 import com.itp.breathsafe.data.dto.DataUpsertDTO;
 import com.itp.breathsafe.data.dto.SensorDataDisplayDTO;
 import com.itp.breathsafe.data.entity.SensorData;
@@ -55,6 +56,7 @@ public class SensorDataService {
         return  sensorDataRepository.getSensorsWithLatestData();
     }
 
+    //delete all data by dataId
     @Transactional
     public void deleteAllDataById(User user, Long dataId) {
         if(user.getRole() != Role.ADMIN) {
@@ -62,6 +64,51 @@ public class SensorDataService {
         }
 
         sensorDataRepository.deleteAllDataById(dataId);
+    }
+
+    //edit AQI value and CO2 level by dataId
+    @Transactional
+    public SensorDataDisplayDTO updateSensorData(DataUpdateDTO dataUpdateDTO, User user) {
+        if(user.getRole() != Role.ADMIN) {
+            throw new CustomException("Unauthorized access");
+        }
+
+        // Check if the record exists
+        SensorData sensorData = sensorDataRepository.findById(dataUpdateDTO.getDataId())
+                .orElseThrow(() -> new CustomException("Sensor data not found"));
+
+        //Find AQI Category
+        AQICategory category = findAQICategory(dataUpdateDTO.getAqiValue());
+
+        //do the update
+        int updatedRows = sensorDataRepository.updateAqiAndCo2Levels(
+                dataUpdateDTO.getDataId(),
+                dataUpdateDTO.getAqiValue(),
+                category,
+                dataUpdateDTO.getCo2Level()
+        );
+
+        if(updatedRows == 0) {
+            throw new CustomException("Update failed");
+        }
+
+        SensorData updatedData = sensorDataRepository.findById(dataUpdateDTO.getDataId())
+                .orElseThrow(() -> new CustomException("Sensor data not found after update"));
+
+        // Replace the problematic section with:
+        return new SensorDataDisplayDTO(
+                updatedData.getSensor().getId(),
+                updatedData.getSensor().getName(),
+                updatedData.getSensor().getLocation(),
+                updatedData.getSensor().getLatitude(),
+                updatedData.getSensor().getLongitude(),
+                updatedData.getSensor().getStatus(),
+                updatedData.getSensor().getCreatedAt(),
+                updatedData.getId(),
+                updatedData.getCo2Level(),
+                updatedData.getAqiValue(),
+                updatedData.getTimestamp().toString()
+        );
     }
 
     //find AQI Category based on AQI value
