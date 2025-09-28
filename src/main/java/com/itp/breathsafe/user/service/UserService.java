@@ -24,6 +24,9 @@ public class UserService {
          userDTO.setFirstName(user.getFirstName());
          userDTO.setLastName(user.getLastName());
          userDTO.setId(user.getId());
+         userDTO.setPhone(user.getPhone());
+         userDTO.setDateOfBirth(user.getDateOfBirth());
+         userDTO.setAddress(user.getAddress());
 
          return userDTO;
     }
@@ -36,6 +39,10 @@ public class UserService {
             currentUser.setEmail(user.getEmail());
             currentUser.setFirstName(user.getFirstName());
             currentUser.setLastName(user.getLastName());
+            currentUser.setPhone(user.getPhone());
+            currentUser.setAddress(user.getAddress());
+            currentUser.setDateOfBirth(user.getDateOfBirth());
+            currentUser.setId(user.getId());
 
             userRepository.save(currentUser);
         } catch (Exception e) {
