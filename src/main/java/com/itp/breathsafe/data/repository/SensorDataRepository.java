@@ -27,6 +27,7 @@ public interface SensorDataRepository extends JpaRepository<SensorData, Long> {
             d.id,
             d.co2Level,
             d.aqiValue,
+            d.aqiCategory,
             CAST(d.timestamp AS string)
         )
         FROM Sensor s

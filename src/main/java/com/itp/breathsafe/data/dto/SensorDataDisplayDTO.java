@@ -1,5 +1,6 @@
 package com.itp.breathsafe.data.dto;
 
+import com.itp.breathsafe.data.enums.AQICategory;
 import com.itp.breathsafe.sensor.enums.SensorStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,9 +19,9 @@ public class SensorDataDisplayDTO {
     private Double longitude;
     private SensorStatus sensorStatus;
     private LocalDateTime createdAt;
-
     private Long dataId;
     private Double co2Level;
     private Integer aqiValue;
+    private AQICategory aqiCategory;
     private String timestamp;
 }

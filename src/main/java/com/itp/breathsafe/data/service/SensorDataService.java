@@ -47,7 +47,13 @@ public class SensorDataService {
         sensorDataRepository.save(sensorData);
     }
 
-    //return list of sensors with latest data
+    /** Get all sensors with their latest data
+     * Only accessible by ADMIN users
+     *
+     * @param user the authenticated user
+     * @return List of SensorDataDisplayDTO
+     * @throws CustomException if user is not ADMIN
+     */
     public List<SensorDataDisplayDTO> getSensorsWithLatestData(User user) {
         if(user.getRole() != Role.ADMIN) {
             throw new CustomException("Unauthorized access");
@@ -56,7 +62,13 @@ public class SensorDataService {
         return  sensorDataRepository.getSensorsWithLatestData();
     }
 
-    //delete all data by dataId
+    /** Delete all data entries associated with a specific data ID
+     * Only accessible by ADMIN users
+     *
+     * @param user the authenticated user
+     * @param dataId the ID of the data to delete
+     * @throws CustomException if user is not ADMIN
+     */
     @Transactional
     public void deleteAllDataById(User user, Long dataId) {
         if(user.getRole() != Role.ADMIN) {
@@ -66,6 +78,15 @@ public class SensorDataService {
         sensorDataRepository.deleteAllDataById(dataId);
     }
 
+
+    /** Update AQI and CO2 levels for a specific data entry
+     * Only accessible by ADMIN users
+     *
+     * @param dataUpdateDTO the data update details
+     * @param user the authenticated user
+     * @return updated SensorDataDisplayDTO
+     * @throws CustomException if user is not ADMIN or if update fails
+     */
     @Transactional
     public SensorDataDisplayDTO updateSensorData(DataUpdateDTO dataUpdateDTO, User user) {
         if(user.getRole() != Role.ADMIN) {
@@ -103,6 +124,7 @@ public class SensorDataService {
                 updatedData.getId(),
                 updatedData.getCo2Level(),
                 updatedData.getAqiValue(),
+                updatedData.getAqiCategory(),
                 updatedData.getTimestamp().toString()
         );
     }
