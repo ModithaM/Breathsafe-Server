@@ -6,7 +6,9 @@ import com.itp.breathsafe.user.entity.User;
 import com.itp.breathsafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -29,6 +31,26 @@ public class UserService {
          userDTO.setAddress(user.getAddress());
 
          return userDTO;
+    }
+
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> {
+                    UserDTO dto = new UserDTO();
+                    dto.setId(user.getId());
+                    dto.setUsername(user.getUsername());
+                    dto.setEmail(user.getEmail());
+                    dto.setFirstName(user.getFirstName());
+                    dto.setLastName(user.getLastName());
+                    dto.setPhone(user.getPhone());
+                    dto.setDateOfBirth(user.getDateOfBirth());
+                    dto.setAddress(user.getAddress());
+                    dto.setBio(user.getBio());
+                    dto.setProfileImage(user.getProfileImage());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     public void updateCurrentUser(UserDTO user){
