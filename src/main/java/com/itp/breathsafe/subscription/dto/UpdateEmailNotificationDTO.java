@@ -1,4 +1,4 @@
 package com.itp.breathsafe.subscription.dto;
 
-public class SubscriptionResponseDTO {
+public class UpdateEmailNotificationDTO {
 }
