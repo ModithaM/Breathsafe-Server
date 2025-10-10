@@ -1,9 +1,7 @@
 package com.itp.breathsafe.data.service;
 
 import com.itp.breathsafe.common.exception.CustomException;
-import com.itp.breathsafe.data.dto.DataUpdateDTO;
-import com.itp.breathsafe.data.dto.DataUpsertDTO;
-import com.itp.breathsafe.data.dto.SensorDataDisplayDTO;
+import com.itp.breathsafe.data.dto.*;
 import com.itp.breathsafe.data.entity.SensorData;
 import com.itp.breathsafe.data.enums.AQICategory;
 import com.itp.breathsafe.data.repository.SensorDataRepository;
@@ -14,6 +12,7 @@ import com.itp.breathsafe.user.enums.Role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -127,6 +126,33 @@ public class SensorDataService {
                 updatedData.getAqiCategory(),
                 updatedData.getTimestamp().toString()
         );
+    }
+
+    /**
+     * Get sensor chart data for the last 7 days - PUBLIC ACCESS
+     * No authentication required, anyone can view sensor data
+     *
+     * @param sensorId the sensor ID
+     * @return SensorChartResponseDTO with sensor details and chart data
+     * @throws CustomException if sensor not found
+     */
+    public SensorChartResponseDTO getSensorChartData(Long sensorId) {
+        //get sensor details
+        SensorDetailsDTO sensorDetails = sensorDataRepository.findSensorDetails(sensorId)
+                .orElseThrow(() -> new CustomException("Sensor data not found"));
+
+        //calculate 7  previous days from now
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+
+        //get chart data to 7 days
+        List<SensorChartDTO> chartData = sensorDataRepository.findSensorChartData(sensorId, sevenDaysAgo);
+
+        SensorChartResponseDTO response = new SensorChartResponseDTO();
+        response.setChartData(chartData);
+        response.setSensorDetails(sensorDetails);
+        response.setTotalRecords(chartData.size());
+
+        return response;
     }
 
     //find AQI Category based on AQI value
