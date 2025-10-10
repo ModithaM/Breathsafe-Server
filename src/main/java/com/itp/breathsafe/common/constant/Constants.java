@@ -9,7 +9,8 @@ public class Constants {
             "/api/v1/publicData/**"
     };
     public static final String[] ADMIN_ENDPOINTS = {
-            "/api/admin/**"
+            "/api/admin/**",
+            "/api/v1/admin/"
     };
     public static final String[] ALL_MEMBER_ENDPOINTS = {
             "/api/v1/sensorRequests/**",
