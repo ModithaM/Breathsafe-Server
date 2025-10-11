@@ -1,6 +1,7 @@
 package com.itp.breathsafe.data.controller;
 
 import com.itp.breathsafe.data.dto.DataUpdateDTO;
+import com.itp.breathsafe.data.dto.SensorChartResponseDTO;
 import com.itp.breathsafe.data.dto.SensorDataDisplayDTO;
 import com.itp.breathsafe.data.service.SensorDataService;
 import com.itp.breathsafe.user.entity.User;
@@ -46,5 +47,11 @@ public class SensorDataController {
         SensorDataDisplayDTO updateData = sensorDataService.updateSensorData(dataUpdateDTO, user);
 
         return ResponseEntity.ok(updateData);
+    }
+
+    @GetMapping("/{sensorId}")
+    public ResponseEntity<SensorChartResponseDTO> getSensorChartData(@PathVariable Long sensorId) {
+        SensorChartResponseDTO chartData = sensorDataService.getSensorChartData(sensorId);
+        return ResponseEntity.ok(chartData);
     }
 }
