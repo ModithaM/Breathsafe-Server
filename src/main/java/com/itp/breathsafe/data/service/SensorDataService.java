@@ -29,7 +29,6 @@ public class SensorDataService {
     @Transactional
     public void createSensorData(DataUpsertDTO dataUpsertDTO) {
 
-        //Check sensor is in the database
         Sensor sensor = sensorRepository.findById(dataUpsertDTO.getSensorId())
                 .orElseThrow(() -> new CustomException("Sensor not found with id: " + dataUpsertDTO.getSensorId()));
 
@@ -92,7 +91,6 @@ public class SensorDataService {
             throw new CustomException("Unauthorized access");
         }
 
-        // Check if the record exists
         sensorDataRepository.findById(dataUpdateDTO.getDataId())
                 .orElseThrow(() -> new CustomException("Sensor data not found"));
 
@@ -137,14 +135,11 @@ public class SensorDataService {
      * @throws CustomException if sensor not found
      */
     public SensorChartResponseDTO getSensorChartData(Long sensorId) {
-        //get sensor details
         SensorDetailsDTO sensorDetails = sensorDataRepository.findSensorDetails(sensorId)
                 .orElseThrow(() -> new CustomException("Sensor data not found"));
 
-        //calculate 7  previous days from now
         LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
 
-        //get chart data to 7 days
         List<SensorChartDTO> chartData = sensorDataRepository.findSensorChartData(sensorId, sevenDaysAgo);
 
         SensorChartResponseDTO response = new SensorChartResponseDTO();
@@ -155,7 +150,6 @@ public class SensorDataService {
         return response;
     }
 
-    //find AQI Category based on AQI value
     private AQICategory findAQICategory(Integer aqiValue) {
         if(aqiValue>=0 && aqiValue<=50) {
             return AQICategory.GOOD;

@@ -28,7 +28,7 @@ public class ScheduledAlertService {
     private final SmartAlertService smartAlertService;
     private final EmailService emailService;
 
-    // In-memory cache to prevent sending duplicate alerts for the same sensor data point.
+    // TODO : Update alert sending logic.
     // Key: Subscription ID, Value: Timestamp of the SensorData record that triggered the last alert.
     private final Map<Long, LocalDateTime> recentlyAlerted = new ConcurrentHashMap<>();
 
@@ -58,7 +58,6 @@ public class ScheduledAlertService {
 
         for (Subscription sub : subscriptions) {
             try {
-                // 2. For each subscription, get the latest data from the associated sensor.
                 Optional<SensorData> latestDataOpt = sensorDataRepository.findFirstBySensorIdOrderByTimestampDesc(sub.getSensor().getId());
 
                 if (latestDataOpt.isEmpty()) {
@@ -68,17 +67,14 @@ public class ScheduledAlertService {
 
                 SensorData latestData = latestDataOpt.get();
 
-                // 3. Check if the AQI value exceeds the user's threshold.
                 boolean thresholdExceeded = latestData.getAqiValue() >= sub.getAlertThreshold();
 
-                // 4. Check if we have already sent an alert for this specific data point to this user.
                 boolean alreadyAlerted = hasBeenAlertedRecently(sub.getId(), latestData.getTimestamp());
 
                 if (thresholdExceeded && !alreadyAlerted) {
                     logger.info("Alert condition met for subscription ID: {}. AQI: {}, Threshold: {}",
                             sub.getId(), latestData.getAqiValue(), sub.getAlertThreshold());
 
-                    // 5. Generate the smart alert message using Gemini.
                     SmartAlertRequest alertRequest = new SmartAlertRequest(
                             latestData.getTemperature(),
                             latestData.getHumidity(),
@@ -87,7 +83,6 @@ public class ScheduledAlertService {
                     );
                     String smartMessage = smartAlertService.getSmartAlert(alertRequest);
 
-                    // 6. Build and send the email.
                     String emailBody = buildAlertEmailBody(
                             sub.getUser().getFirstName() != null ? sub.getUser().getFirstName() : sub.getUser().getUsername(),
                             sub.getSensor().getName(),
@@ -100,13 +95,11 @@ public class ScheduledAlertService {
                     emailService.sendHtmlEmail(sub.getUser().getEmail(), "Air Quality Alert for " + sub.getSensor().getName(), emailBody);
                     logger.info("Successfully sent alert email to {} for subscription ID {}", sub.getUser().getEmail(), sub.getId());
 
-                    // 7. Mark this data point as "alerted" for this subscription to prevent spam.
                     recentlyAlerted.put(sub.getId(), latestData.getTimestamp());
                 }
 
             } catch (CustomException | MessagingException e) {
                 logger.error("Failed to process alert for subscription ID {}: {}", sub.getId(), e.getMessage());
-                // Continue to the next subscription even if one fails.
             }
         }
         logger.info("Finished scheduled alert check.");
@@ -118,7 +111,6 @@ public class ScheduledAlertService {
     }
 
     private String buildAlertEmailBody(String userName, String sensorName, String location, Integer aqi, String aqiCategory, String smartMessage) {
-        // The only change is escaping the '%' signs in the CSS with '%%'
         return """
         <!DOCTYPE html>
         <html>

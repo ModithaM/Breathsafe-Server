@@ -20,7 +20,7 @@ import java.util.Iterator;
  * SmartAlertService (no AQICategory enum).
  * The service derives an AQI category string from the numeric AQI value and sends a live generateContent request
  * to Gemini on each invocation. It sends payload in the exact contents/parts/text shape the API expects.
- *
+ * <p>
  * On client 4xx errors (other than 429) the method throws a CustomException containing the remote body.
  * Retries transient failures (5xx, 429) up to gemini.maxAttempts.
  */
@@ -169,7 +169,6 @@ public class SmartAlertService {
     private String extractFirstGeneratedText(JsonNode root) {
         if (root == null || root.isMissingNode()) return null;
 
-        // 1) Prefer explicit candidate content: candidates -> content[*].text
         JsonNode candidates = root.path("candidates");
         if (candidates.isArray() && candidates.size() > 0) {
             JsonNode first = candidates.get(0);
