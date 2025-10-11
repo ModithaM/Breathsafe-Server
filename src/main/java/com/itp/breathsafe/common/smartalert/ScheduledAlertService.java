@@ -1,9 +1,7 @@
-package com.itp.breathsafe.common.alerting;
+package com.itp.breathsafe.common.smartalert;
 
 import com.itp.breathsafe.common.email.EmailService;
 import com.itp.breathsafe.common.exception.CustomException;
-import com.itp.breathsafe.common.smartalert.SmartAlertRequest;
-import com.itp.breathsafe.common.smartalert.SmartAlertService;
 import com.itp.breathsafe.data.entity.SensorData;
 import com.itp.breathsafe.data.repository.SensorDataRepository;
 import com.itp.breathsafe.subscription.entity.Subscription;

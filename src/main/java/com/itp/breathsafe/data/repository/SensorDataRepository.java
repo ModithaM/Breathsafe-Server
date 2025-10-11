@@ -100,4 +100,6 @@ public interface SensorDataRepository extends JpaRepository<SensorData, Long> {
      */
     @Query("SELECT COUNT(s) > 0 FROM Sensor s WHERE s.id = :sensorId")
     boolean existsSensorById(@Param("sensorId") Long sensorId);
+
+    Optional<SensorData> findFirstBySensorIdOrderByTimestampDesc(Long sensorId);
 }
