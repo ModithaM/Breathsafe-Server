@@ -15,6 +15,7 @@ public class Constants {
             "/api/v1/sensorRequests/**",
             "/api/v1/sensors/**",
             "/api/v1/subscriptions/**",
-            "/api/v1/user/**"
+            "/api/v1/user/**",
+            "/api/v1/admin/subscriptions/**"
     };
 }

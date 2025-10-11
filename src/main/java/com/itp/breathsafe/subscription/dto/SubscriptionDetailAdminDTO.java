@@ -9,12 +9,19 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubscriptionResponseDTO {
+public class SubscriptionDetailAdminDTO {
+    // Subscription Info
     private Long subscriptionId;
     private Integer alertThreshold;
     private Boolean emailNotifications;
-    private Boolean isActive;
     private LocalDateTime subscribedAt;
+
+    // User Info
+    private Long userId;
+    private String username;
+    private String userEmail;
+
+    // Sensor Info
     private Long sensorId;
     private String sensorName;
     private String sensorLocation;
