@@ -39,4 +39,7 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
     List<Subscription> findAllByUserIdWithSensorDetails(Long userId);
 
     Optional<Subscription> findByIdAndUserId(Long subscriptionId, Long userId);
+
+    @Query("SELECT s FROM Subscription s JOIN FETCH s.user JOIN FETCH s.sensor WHERE s.isActive = true AND s.emailNotifications = true")
+    List<Subscription> findAllActiveEmailSubscriptionsWithDetails();
 }
