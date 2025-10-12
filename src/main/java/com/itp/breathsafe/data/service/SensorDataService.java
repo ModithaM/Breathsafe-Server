@@ -53,9 +53,9 @@ public class SensorDataService {
      * @throws CustomException if user is not ADMIN
      */
     public List<SensorDataDisplayDTO> getSensorsWithLatestData(User user) {
-        if(user.getRole() != Role.ADMIN) {
-            throw new CustomException("Unauthorized access");
-        }
+//        if(user.getRole() != Role.ADMIN) {
+//            throw new CustomException("Unauthorized access");
+//        }
 
         return  sensorDataRepository.getSensorsWithLatestData();
     }
