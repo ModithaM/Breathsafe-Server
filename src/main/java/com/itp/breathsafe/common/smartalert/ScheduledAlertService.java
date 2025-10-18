@@ -48,7 +48,7 @@ public class ScheduledAlertService {
      * Periodically checks subscriptions and sends smart alerts if conditions are met.
      * The schedule is configured in application.properties (e.g., every 1 minute for testing).
      */
-    @Scheduled(fixedRateString = "${alerting.schedule.rate.ms}")
+    //@Scheduled(fixedRateString = "${alerting.schedule.rate.ms}")
     public void checkSubscriptionsAndSendAlerts() {
         logger.info("Starting scheduled alert check...");
 
