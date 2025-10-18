@@ -1,5 +1,8 @@
 # 🌿 BreathSafe Backend
 
+<img width="1440" height="900" alt="Screenshot 2025-10-18 at 2 53 44 PM" src="https://github.com/user-attachments/assets/f672cec7-96c4-4190-a98e-8e74ee77ef3c" />
+
+
 The **BreathSafe Backend** is a Spring Boot–based REST API server designed to collect, process, and analyze air quality data from IoT sensors.  
 It powers the BreathSafe system — an environmental health monitoring platform that provides **real-time air quality tracking** and **AI-generated safety recommendations**.
 
